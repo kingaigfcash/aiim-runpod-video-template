@@ -1,3 +1,12 @@
+Here's a breakdown of the files and where they should go in ComfyUI, along with the updated provisioning script:
+
+*   `models_t5_umt5-xxl-enc-bf16.pth`: This is a text encoder checkpoint.
+*   `Wan2.1_VAE.pth`: This is a VAE model.
+*   `models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth` (both links): These are CLIP models.
+
+Here's the updated provisioning script:
+
+```
 # This file will be sourced in default.sh
 
 # https://github.com/kingaigfcash/aigfcash-runpod-template
@@ -37,10 +46,11 @@ NODES=(
     "https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes"
     "https://github.com/shiimizu/ComfyUI-TiledDiffusion"
     "https://github.com/kijai/ComfyUI-WanVideoWrapper"
+    "https://github.com/Fannovel16/comfyui_controlnet_aux"
 )
 
 WORKFLOWS=(
-	"https://github.com/kingaigfcash/aigfcash-runpod-template.git"
+	"https://github.com/kingaigfcash/aiim-runpod-video-template.git"
 )
 
 # Initialize empty arrays for models
@@ -53,25 +63,34 @@ CHECKPOINT_MODELS=(
 UNET_MODELS=()
 
 CLIP_VISION=(
-    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
+	"https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
+	"https://huggingface.co/Kijai/WanVideo_comfy/resolve/b4fde5290d401dff216d70a915643411e9532951/open-clip-xlm-roberta-large-vit-huge-14_fp16.safetensors"
 )
 
-CLIP_MODELS=()
+CLIP_MODELS=(
+    "https://huggingface.co/alibaba-pai/Wan2.1-Fun-14B-Control/resolve/main/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth"
+    "https://huggingface.co/alibaba-pai/Wan2.1-Fun-14B-Control/resolve/main/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth"
+)
 
 LORA_MODELS=()
-CONTROLNET_MODELS=()
+CONTROLNET_MODELS=(
+    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_depth_256lora.safetensors"
+)
 ESRGAN_MODELS=()
 TEXT_ENCODER_MODELS=(
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp16.safetensors"
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+    "https://huggingface.co/alibaba-pai/Wan2.1-Fun-1.3B-Control/resolve/main/models_t5_umt5-xxl-enc-bf16.pth"
 )
 
 VAE_MODELS=(
-    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/wan_2.1_vae.safetensors"
+    "https://huggingface.co/kingcashflow/vae/resolve/main/wan_2.1_vae.safetensors"
+    "https://huggingface.co/alibaba-pai/Wan2.1-Fun-14B-Control/resolve/main/Wan2.1_VAE.pth"
 )
 
 DIFFUSION_MODELS=(
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_720p_14B_fp16.safetensors"
+    "https://huggingface.co/alibaba-pai/Wan2.1-Fun-1.3B-Control/resolve/main/diffusion_pytorch_model.safetensors"
 )
 
 INSIGHTFACE_MODELS=(
@@ -120,7 +139,7 @@ function provisioning_start() {
         "${WORKSPACE}/storage/stable_diffusion/models/unet" \
         "${UNET_MODELS[@]}"
     provisioning_get_models \
-        "${WORKSPACE}/storage/stable_diffusion/models/clip" \
+        "${WORKSPACE}/ComfyUI/models/clip" \
         "${CLIP_MODELS[@]}"
     provisioning_get_models \
         "${WORKSPACE}/ComfyUI/models/clip_vision/" \
