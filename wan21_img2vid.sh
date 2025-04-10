@@ -1,12 +1,3 @@
-Here's a breakdown of the files and where they should go in ComfyUI, along with the updated provisioning script:
-
-*   `models_t5_umt5-xxl-enc-bf16.pth`: This is a text encoder checkpoint.
-*   `Wan2.1_VAE.pth`: This is a VAE model.
-*   `models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth` (both links): These are CLIP models.
-
-Here's the updated provisioning script:
-
-```
 # This file will be sourced in default.sh
 
 # https://github.com/kingaigfcash/aigfcash-runpod-template
@@ -47,6 +38,9 @@ NODES=(
     "https://github.com/shiimizu/ComfyUI-TiledDiffusion"
     "https://github.com/kijai/ComfyUI-WanVideoWrapper"
     "https://github.com/Fannovel16/comfyui_controlnet_aux"
+    "https://github.com/kijai/ComfyUI-Florence2"
+    "https://github.com/un-seen/comfyui-tensorops"
+    "https://github.com/kijai/ComfyUI-Florence2"
 )
 
 WORKFLOWS=(
@@ -72,7 +66,9 @@ CLIP_MODELS=(
     "https://huggingface.co/alibaba-pai/Wan2.1-Fun-14B-Control/resolve/main/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth"
 )
 
-LORA_MODELS=()
+LORA_MODELS=(
+    "https://huggingface.co/spacepxl/Wan2.1-control-loras/resolve/main/1.3b/depth/wan2.1-1.3b-control-lora-depth-v0.1_comfy.safetensors"
+)
 CONTROLNET_MODELS=(
     "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_depth_256lora.safetensors"
 )
