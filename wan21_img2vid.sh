@@ -38,9 +38,12 @@ NODES=(
     "https://github.com/shiimizu/ComfyUI-TiledDiffusion"
     "https://github.com/kijai/ComfyUI-WanVideoWrapper"
     "https://github.com/Fannovel16/comfyui_controlnet_aux"
-    "https://github.com/kijai/ComfyUI-Florence2"
+    "https://github.com/kijai/ComfyUI-Florence2.git"
     "https://github.com/un-seen/comfyui-tensorops"
     "https://github.com/kijai/ComfyUI-Florence2"
+    "https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git"
+    "https://github.com/storyicon/comfyui_segment_anything"
+    "https://github.com/Chaoses-Ib/ComfyUI_Ib_CustomNodes"
 )
 
 WORKFLOWS=(
@@ -49,10 +52,6 @@ WORKFLOWS=(
 
 # Initialize empty arrays for models
 CHECKPOINT_MODELS=(
-    "https://huggingface.co/RunDiffusion/Juggernaut-XI-v11/resolve/main/Juggernaut-XI-byRunDiffusion.safetensors"
-    "https://huggingface.co/John6666/epicrealism-xl-v8kiss-sdxl/resolve/main/epicrealismXL_vx1Finalkiss.safetensors"
-    "https://huggingface.co/TheImposterImposters/URPM-v2.3Final/resolve/main/uberRealisticPornMerge_v23Final.safetensors"
-    "https://huggingface.co/AiWise/epiCRealism-XL-vXI-aBEAST/resolve/5c3950c035ce565d0358b76805de5ef2c74be919/epicrealismXL_vxiAbeast.safetensors"
 )
 UNET_MODELS=()
 
@@ -73,6 +72,7 @@ CONTROLNET_MODELS=(
     "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/sai_xl_depth_256lora.safetensors"
 )
 ESRGAN_MODELS=()
+
 TEXT_ENCODER_MODELS=(
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp16.safetensors"
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
@@ -82,6 +82,7 @@ TEXT_ENCODER_MODELS=(
 VAE_MODELS=(
     "https://huggingface.co/kingcashflow/vae/resolve/main/wan_2.1_vae.safetensors"
     "https://huggingface.co/alibaba-pai/Wan2.1-Fun-14B-Control/resolve/main/Wan2.1_VAE.pth"
+    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors"
 )
 
 DIFFUSION_MODELS=(
