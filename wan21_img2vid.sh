@@ -1,10 +1,10 @@
 # This file will be sourced in default.sh
 
-# https://github.com/kingaigfcash/aigfcash-runpod-template
+# https://github.com/kingaigfcash/aiim-runpod-video-template/
 
 # Packages are installed after nodes
 
-DEFAULT_WORKFLOW="https://raw.githubusercontent.com/kingaigfcash/aigfcash-runpod-template/refs/heads/main/workflows/default_workflow.json"
+DEFAULT_WORKFLOW="https://github.com/kingaigfcash/aiim-runpod-video-template/blob/cd1ee83a0aa4649e24ec9628cc5b864a200c831c/workflows/1%20Wan21%20AI%20Image%20To%20Video%20I2V.json"
 
 APT_PACKAGES=(
     #"package-1"
