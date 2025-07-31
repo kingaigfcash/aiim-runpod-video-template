@@ -12,6 +12,7 @@ APT_PACKAGES=(
 )
 
 PIP_PACKAGES=(
+    "huggingface_hub[cli]"
     #"package-1"
     #"package-2"
 )
@@ -94,6 +95,35 @@ SAM_MODELS=(
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
+function provisioning_wan22() {
+    printf "\nProvisioning Wan 2.2...\n"
+    WAN22_DIR="${WORKSPACE}/Wan2.2"
+    if [[ -d "$WAN22_DIR" ]]; then
+        if [[ ${AUTO_UPDATE,,} != "false" ]]; then
+            printf "Updating Wan 2.2 repository...\n"
+            ( cd "$WAN22_DIR" && git pull )
+        fi
+    else
+        printf "Cloning Wan 2.2 repository...\n"
+        git clone https://github.com/Wan-Video/Wan2.2.git "$WAN22_DIR"
+    fi
+
+    WAN22_REQ="${WAN22_DIR}/requirements.txt"
+    if [[ -f "$WAN22_REQ" ]]; then
+        printf "Installing Wan 2.2 dependencies...\n"
+        pip_install -r "$WAN22_REQ"
+    fi
+
+    WAN22_I2V_MODEL_DIR="${WORKSPACE}/Wan2.2-I2V-A14B"
+    if [[ ! -d "$WAN22_I2V_MODEL_DIR" ]]; then
+        printf "Downloading Wan 2.2 I2V model...\n"
+        huggingface-cli download Wan-AI/Wan2.2-I2V-A14B --local-dir "$WAN22_I2V_MODEL_DIR" --local-dir-use-symlinks False
+    else
+        printf "Wan 2.2 I2V model directory already exists, skipping download.\n"
+    fi
+    printf "Wan 2.2 provisioning complete.\n"
+}
+
 function provisioning_start() {
     if [[ ! -d /opt/environments/python ]]; then 
         export MAMBA_BASE=true
@@ -106,6 +136,7 @@ function provisioning_start() {
     provisioning_get_apt_packages
     provisioning_get_nodes
     provisioning_get_pip_packages
+    provisioning_wan22
 
     # Create model directories
     mkdir -p "${WORKSPACE}/ComfyUI/models/checkpoints"
