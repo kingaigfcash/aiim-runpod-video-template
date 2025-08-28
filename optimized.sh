@@ -52,7 +52,6 @@ VAE_MODELS=(
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors
   https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
 )
-
 TEXT_ENCODERS=(
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5-xxl-enc-bf16.safetensors
   https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
@@ -145,6 +144,19 @@ install_python_base() {
   fi
 }
 
+install_pytorch() {
+  log "Installing PyTorch based on GPU..."
+  GPU_NAME=$(nvidia-smi --query-gpu=name --format=csv,noheader | head -n1 || echo "Unknown")
+  if [[ "$GPU_NAME" == *"5090"* || "$GPU_NAME" == *"B200"* || "$GPU_NAME" == *"H200"* ]]; then
+    echo "[INFO] Detected next-gen GPU ($GPU_NAME), installing PyTorch nightly (CUDA 12.5+)..."
+    pipx install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu125
+  else
+    echo "[INFO] Installing stable PyTorch 2.4.1 (CUDA 12.1) for $GPU_NAME..."
+    pipx install torch==2.4.1+cu121 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+  fi
+  pipx install xformers==0.0.28.post1
+}
+
 install_nodes() {
   log "Installing nodes..."
   local base="${COMFY_DIR}/custom_nodes"
@@ -184,6 +196,7 @@ main() {
   install_apt
   clone_comfyui
   install_python_base
+  install_pytorch
   install_nodes
   make_model_dirs
   fetch_models
