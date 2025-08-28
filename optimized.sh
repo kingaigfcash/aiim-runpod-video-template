@@ -51,8 +51,8 @@ DIFFUSION_MODELS=(
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp16.safetensors
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_high_noise_14B_fp16.safetensors
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_low_noise_14B_fp16.safetensors
-  https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/unet/qwen_image_edit-q8_0.gguf
-  https://huggingface.co/Comfy-Org/Wan22-GGUF/resolve/main/wan22_image_q8_0.gguf
+https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/unet/qwen_image_edit-q8_0.gguf
+https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_fp8_e4m3fn.safetensors
 )
 
 VAE_MODELS=(
@@ -108,10 +108,10 @@ fetch() {
   mkdir -p "$(dirname "$out")"
   for i in 1 2 3; do
     curl -fL --retry 5 --retry-delay 2 "${auth[@]}" -o "$out.partial" "$url" && mv -f "$out.partial" "$out" || true
-    if [[ -s "$out" && $(stat -c%s "$out") -ge 262144 ]]; then
+    if [[ -s "$out" && $(stat -c%s "$out") -ge 1024 ]]; then
       echo OK; return 0
     fi
-    warn "download retry $i: $url"
+    warn "download retry $i: $url -> $out"
     sleep 2
   done
   return 1
@@ -163,14 +163,25 @@ install_python_base() {
 install_pytorch() {
   log "Installing PyTorch based on GPU..."
   GPU_NAME=$(nvidia-smi --query-gpu=name --format=csv,noheader | head -n1 || echo "Unknown")
+  pipx uninstall -y torch torchvision torchaudio xformers >/dev/null 2>&1 || true
   if [[ "$GPU_NAME" == *"5090"* || "$GPU_NAME" == *"B200"* || "$GPU_NAME" == *"H200"* ]]; then
-    echo "[INFO] Detected next-gen GPU ($GPU_NAME), installing PyTorch nightly (CUDA 12.5+)..."
-    pipx install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu125
+    echo "[INFO] Detected next-gen GPU ($GPU_NAME), installing PyTorch nightly (CUDA 12.4)..."
+    pipx install --upgrade --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu124
+    pipx install --upgrade --pre xformers --index-url https://download.pytorch.org/whl/nightly/cu124 || true
   else
     echo "[INFO] Installing stable PyTorch 2.4.1 (CUDA 12.1) for $GPU_NAME..."
     pipx install torch==2.4.1+cu121 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+    pipx install xformers==0.0.28.post1 || true
   fi
-  pipx install xformers==0.0.28.post1
+  pyx - <<'PY'
+import torch
+print("torch:", torch.__version__, "cuda:", torch.version.cuda)
+try:
+    print("arch list:", torch.cuda.get_arch_list())
+except Exception as e:
+    print("arch list error:", e)
+print("is_cuda_available:", torch.cuda.is_available())
+PY
 }
 
 install_nodes() {
@@ -201,11 +212,14 @@ make_model_dirs() {
 
 fetch_models() {
   log "Fetching models..."
-  for d in "${DIFFUSION_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/diffusion_models/$(basename "$d")"; done
-  for d in "${VAE_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/vae/$(basename "$d")"; done
-  for d in "${TEXT_ENCODERS[@]}"; do fetch "$d" "${COMFY_DIR}/models/text_encoders/$(basename "$d")"; done
-  for d in "${LORA_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/loras/$(basename "$d")"; done
-  for d in "${FRAME_INTERP_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/rife/$(basename "$d")"; done
+  log "Downloading diffusion models..."; for d in "${DIFFUSION_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/diffusion_models/$(basename "$d")" || warn "failed: $d"; done
+  log "Downloading VAE models..."; for d in "${VAE_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/vae/$(basename "$d")" || warn "failed: $d"; done
+  log "Downloading text encoders..."; for d in "${TEXT_ENCODERS[@]}"; do fetch "$d" "${COMFY_DIR}/models/text_encoders/$(basename "$d")" || warn "failed: $d"; done
+  log "Downloading LoRAs..."; for d in "${LORA_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/loras/$(basename "$d")" || warn "failed: $d"; done
+  log "Downloading frame interpolation models..."; for d in "${FRAME_INTERP_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/rife/$(basename "$d")" || warn "failed: $d"; done
+  if [[ ${#UPSCALE_MODELS[@]} -gt 0 ]]; then
+    log "Downloading upscalers..."; for d in "${UPSCALE_MODELS[@]}"; do fetch "$d" "${COMFY_DIR}/models/upscale_models/$(basename "$d")" || warn "failed: $d"; done
+  fi
 }
 
 main() {
