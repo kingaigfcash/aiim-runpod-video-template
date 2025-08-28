@@ -77,6 +77,9 @@ LORA_MODELS=(
 
   # Toolkit LoRA
   https://huggingface.co/Comfy-Org/Wan22-LoRAs/resolve/main/wan22_b0n1_toolkit2_000001250.safetensors
+
+  # Movement LoRas
+  https://civitai.com/api/download/models/2087124
 )
 
 FRAME_INTERP_MODELS=(
