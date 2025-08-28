@@ -35,6 +35,8 @@ NODES=(
   https://github.com/Fannovel16/ComfyUI-Frame-Interpolation
   https://github.com/kijai/ComfyUI-KJNodes
   https://github.com/kijai/ComfyUI-WanVideoWrapper
+  https://github.com/city96/ComfyUI-GGUF
+  https://github.com/city96/ComfyUI-Qwen
 )
 
 # === Models required ===
@@ -42,10 +44,15 @@ DIFFUSION_MODELS=(
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp16.safetensors
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_high_noise_14B_fp16.safetensors
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_low_noise_14B_fp16.safetensors
+  https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/unet/qwen_image_edit-q8_0.gguf
+  # Wan22 GGUF models (replace with actual file names from JSON)
+  https://huggingface.co/Comfy-Org/Wan22-GGUF/resolve/main/wan22_image_q8_0.gguf
 )
 VAE_MODELS=(
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors
+  https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
 )
+
 TEXT_ENCODERS=(
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5-xxl-enc-bf16.safetensors
   https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
@@ -53,6 +60,7 @@ TEXT_ENCODERS=(
 LORA_MODELS=(
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/Wan2.2-T2V-A14B-4steps-lora-rank64-Seko-V1_low_noise_model.safetensors
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/Wan2.2-Lightning_I2V-A14B-4steps-lora_LOW_fp16.safetensors
+  https://huggingface.co/Comfy-Org/Wan22-LoRAs/resolve/main/wan22_b0n1_toolkit2_000001250.safetensors
 )
 FRAME_INTERP_MODELS=(
   https://huggingface.co/hzwer/Practical-RIFE/resolve/main/rife49.pth
