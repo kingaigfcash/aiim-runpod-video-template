@@ -68,8 +68,9 @@ TEXT_ENCODERS=(
 )
 
 LORA_MODELS=(
-  # Wan 2.2 T2V LoRA (low noise)
+  # Wan 2.2 T2V LoRA (low & high noise)
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/Wan2.2-T2V-A14B-4steps-lora-rank64-Seko-V1_low_noise_model.safetensors
+  https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors
 
   # Wan 2.2 Lightning I2V LoRAs
   https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan22-Lightning/Wan2.2-Lightning_I2V-A14B-4steps-lora_HIGH_fp16.safetensors
