@@ -61,14 +61,14 @@ VAE_MODELS=(
 )
 
 TEXT_ENCODERS=(
-  # Wan 2.2 text encoder
+  # Wan 2.2 UMT5 encoder
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5-xxl-enc-bf16.safetensors
-  # Wan 2.1 FP8 scaled version
+  # Wan 2.1 FP8 scaled encoder
   https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
 )
 
 LORA_MODELS=(
-  # Wan 2.2 text-to-video LoRA
+  # Wan 2.2 T2V LoRA (low noise)
   https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/Wan2.2-T2V-A14B-4steps-lora-rank64-Seko-V1_low_noise_model.safetensors
 
   # Wan 2.2 Lightning I2V LoRAs
@@ -77,9 +77,6 @@ LORA_MODELS=(
 
   # Toolkit LoRA
   https://huggingface.co/Comfy-Org/Wan22-LoRAs/resolve/main/wan22_b0n1_toolkit2_000001250.safetensors
-
-  # Movement LoRas
-  https://civitai.com/api/download/models/2087124
 )
 
 FRAME_INTERP_MODELS=(
