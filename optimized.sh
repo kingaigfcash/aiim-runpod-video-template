@@ -34,7 +34,7 @@ NODES=(
   https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
   https://github.com/Fannovel16/ComfyUI-Frame-Interpolation
   https://github.com/kijai/ComfyUI-KJNodes
-  https://github.com/pythongosssss/ComfyUI-WanVideoWrapper
+  https://github.com/kijai/ComfyUI-WanVideoWrapper
 )
 
 # === Models required ===
